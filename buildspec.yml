@@ -1,0 +1,15 @@
+version: 0.1
+phases:
+  install:
+    commands:
+      - cd src; pip install -r requirements.txt -t .; cd ..
+      - python run_zip.py
+      - aws s3 cp cloudtrail.zip s3://sgas.sam.aws-services-authorizer
+      - aws cloudformation package
+         --template-file template.yaml
+         --s3-bucket sgas.sam.aws-services-authorizer
+         --output-template-file samTemplate.yaml
+artifacts:
+  type: zip
+  files:
+    - samTemplate.yaml
