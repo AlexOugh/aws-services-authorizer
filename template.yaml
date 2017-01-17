@@ -1,6 +1,23 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Lambda Function for Custom Authorizer.
+
+Parameters:
+  SSOHost:
+    Type: String
+    Description: SSO Host
+  SSOBasicAuthUsername:
+    Type: String
+    Description: Username for SSO Auth
+  SSOBasicAuthPassword:
+    Type: String
+    NoEcho: true
+    Description: Password for SSO Auth
+  SSOMasterToken:
+    Type: String
+    NoEcho: true
+    Description: Master Refresh Token
+
 Resources:
   EncryptionDecryptionKey:
     Type: AWS::KMS::Key
@@ -69,12 +86,25 @@ Resources:
     Properties:
       Handler: authorizer.lambda_handler
       Runtime: python2.7
-      CodeUri: s3://sgas.sam.aws-services-authorizer/authorizer.zip
+      CodeUri: ./src
       Role: !GetAtt LambdaFunctionIAMRole.Arn
       Timeout: 300
       Environment:
         Variables:
-          SSO_HOST: "qa-sungard.sso.sungardas.io"
-          SSO_BASIC_AUTH_USERNAME: "msaws"
-          SSO_BASIC_AUTH_PASSWORD: "Sungard01"
-          SSO_MASTER_TOKEN: "ffffffff-ffff-ffff-ffff-ffffffffffff"
+          SSO_HOST: !Ref SSOHost
+          SSO_BASIC_AUTH_USERNAME: !Ref SSOBasicAuthUsername
+          SSO_BASIC_AUTH_PASSWORD: !Ref SSOBasicAuthPassword
+          SSO_MASTER_TOKEN: !Ref SSOMasterToken
+          KMS_KEY_ID: !Ref EncryptionDecryptionKey
+          KMS_KEY_ARN: !GetAtt EncryptionDecryptionKey.Arn
+
+Outputs:
+  LambdaFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt LambdaFunction.Arn
+  KMSKeyId:
+    Description: "KMS Key Id"
+    Value: !Ref EncryptionDecryptionKey
+  KMSKeyArn:
+    Description: "KMS Key Id"
+    Value: !GetAtt EncryptionDecryptionKey.Arn

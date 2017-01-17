@@ -3,8 +3,6 @@ phases:
   install:
     commands:
       - cd src; pip install -r requirements.txt -t .; cd ..
-      - python run_zip.py
-      - aws s3 cp authorizer.zip s3://$S3_BUCKET_NAME
       - aws cloudformation package
          --template-file template.yaml
          --s3-bucket $S3_BUCKET_NAME
@@ -13,3 +11,4 @@ artifacts:
   type: zip
   files:
     - samTemplate.yaml
+    - env_dev.json

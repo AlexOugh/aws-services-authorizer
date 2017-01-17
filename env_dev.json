@@ -1,0 +1,8 @@
+{
+  "Parameters": {
+    "SSOHost": "qa-sungard.sso.sungardas.io",
+    "SSOBasicAuthUsername": "msaws",
+    "SSOBasicAuthPassword": "Sungard01",
+    "SSOMasterToken": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+  }
+}
