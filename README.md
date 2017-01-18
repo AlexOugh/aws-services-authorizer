@@ -1,7 +1,7 @@
 
 # Custom Authorizer
 
-Lambda function for custom authorizer in API Gateway
+Lambda Function for custom authorizer in API Gateway
 
 ![aws-services][aws-services-image]
 
@@ -11,7 +11,7 @@ Lambda function for custom authorizer in API Gateway
 
   >
 
-      codepipeline-\<region\>-\<account_num\>-\<project_name\>
+      codepipeline-<region>-<account_num>-<project_name>
 
   like
 
