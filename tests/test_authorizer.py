@@ -11,7 +11,7 @@ sys.path.insert(0, r"../src")
 
 import json
 from sso import authenticate
-ret = authenticate('', '')
+ret = authenticate('<username>', '<password>')
 refresh_token = json.loads(ret)['refresh_token']
 
 from authorizer import lambda_handler
