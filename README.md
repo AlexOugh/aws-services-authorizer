@@ -7,51 +7,32 @@ Lambda Function for custom authorizer in API Gateway
 
 ## How To Setup a CodePipeline
 
-- First, create a S3 Bucket where the deployment files will be uploaded with following below naming convention. *(You can use a different convention, but you need to add a permission for the CodeBuild to access this S3 bucket)*.
+Please see here, https://github.com/SungardAS/aws-services-federation#how-to-setup-a-codepipeline
 
-  >
+And follow either way to set input parameter values of the template when creating a build action whose mode is 'Create of replace a change set'
 
-      codepipeline-<region>-<account_num>-<project_name>
+  1. Using a configuration file
 
-  like
+    > Create a configuration json file that has input parameter values as below
 
-      codepipeline-us-east-1-9999999999-aws-services-encryption
+          {
+              "Parameters": {
+                "SSOHost": "value1",
+                "SSOBasicAuthUsername": "value2",
+                "SSOBasicAuthPassword": "value2",
+                "SSOMasterToken": "value2"
+              }
+          }
 
+    > Set the name of the above json file in 'Template configuration' using below format
 
-- Follow the steps in http://docs.aws.amazon.com/lambda/latest/dg/automating-deployment.html along with additional steps below.
+        InputArtifactName::TemplateConfigurationFileName
 
-  - When creating a new project in CodeBuild,
+    like
 
-    > Under 'Advanced' setting, add an Environment variable , S3_BUCKET_NAME, with the S3 bucket name you created above.
+        MyAppBuild::env_dev.json
 
-  - When creating a build action whose mode is 'Create of replace a change set'
-
-      - Set input parameter values of the SAM template and there are 2 ways to set the values
-
-        1. Using a configuration file
-
-          > Create a configuration json file that has input parameter values as below
-
-                {
-                    "Parameters": {
-                      "SSOHost": "value1",
-                      "SSOBasicAuthUsername": "value2",
-                      "SSOBasicAuthPassword": "value2",
-                      "SSOMasterToken": "value2"
-                    }
-                }
-
-          > Set 'Template configuration' value using the name of the json file you created above following below format
-
-              InputArtifactName::TemplateConfigurationFileName
-
-          like
-
-              MyAppBuild::env_dev.json
-
-        2. Storing the values in the Setting
-
-          > Set the parameter values in 'Parameter overrides' under 'Advanced' setting
+  2. Set the parameter json in 'Parameter overrides' under 'Advanced' setting
 
 
 ## How To Test Lambda Functions
